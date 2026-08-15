@@ -1451,6 +1451,29 @@
     let scrollTimer = null;
 
     let fontSize = 21;
+    // Garde l'écran du téléphone allumé
+let wakeLock = null;
+
+async function keepScreenAwake() {
+    try {
+        if ("wakeLock" in navigator) {
+            wakeLock = await navigator.wakeLock.request("screen");
+            console.log("Écran maintenu allumé");
+        }
+    } catch (err) {
+        console.log("Wake Lock non disponible :", err);
+    }
+}
+
+// Activer au chargement
+keepScreenAwake();
+
+// Réactiver lorsque l'utilisateur revient sur le site
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        keepScreenAwake();
+    }
+});
 
     /* =========================================================
 
