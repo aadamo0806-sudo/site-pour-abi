@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Bibliothèque d'histoires avec lecture et défilement automatique.">
+
+    <title>Ma Bibliothèque d'Histoires</title>
+
+    <style>
+
+        /* =========================================================
+
+           STYLE GENERAL
+
+           ========================================================= */
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f2f5f9;
+
+            color: #20252b;
+
+            transition: background 0.3s, color 0.3s;
+
+        }
+
+        button,
+
+        select,
+
+        input {
+
+            font: inherit;
+
+        }
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+        /* =========================================================
+
+           EN-TETE
+
+           ========================================================= */
+
+        header {
+
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+
+            color: white;
+
+            padding: 22px 20px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+
+        }
+
+        .header-content {
+
+            max-width: 1300px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+        }
+
+        .logo {
+
+            font-size: 26px;
+
+            font-weight: bold;
+
+        }
+
+        .logo small {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: normal;
+
+            opacity: 0.85;
+
+            margin-top: 4px;
+
+        }
+
+        /* =========================================================
+
+           BOUTON MODE SOMBRE
+
+           ========================================================= */
+
+        .dark-button {
+
+            border: 2px solid rgba(255,255,255,0.7);
+
+            background: rgba(255,255,255,0.15);
+
+            color: white;
+
+            padding: 10px 14px;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+
+        }
+
+        .dark-button:hover {
+
+            background: rgba(255,255,255,0.3);
+
+        }
+
+        /* =========================================================
+
+           STRUCTURE PRINCIPALE
+
+           ========================================================= */
+
+        .container {
+
+            max-width: 1300px;
+
+            margin: 25px auto;
+
+            padding: 0 18px;
+
+        }
+
+        .layout {
+
+            display: grid;
+
+            grid-template-columns: 280px 1fr;
+
+            gap: 20px;
+
+        }
+
+        /* =========================================================
+
+           MENU DES HISTOIRES
+
+           ========================================================= */
+
+        .sidebar {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 18px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            height: fit-content;
+
+            position: sticky;
+
+            top: 15px;
+
+        }
+
+        .sidebar h2 {
+
+            margin-top: 0;
+
+            font-size: 20px;
+
+        }
+
+        .story-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 9px;
+
+        }
+
+        .story-button {
+
+            border: none;
+
+            text-align: left;
+
+            background: #f1f3f7;
+
+            color: #222;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+
+        }
+
+        .story-button:hover {
+
+            background: #e3e5ff;
+
+        }
+
+        .story-button.active {
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-weight: bold;
+
+        }
+
+        /* =========================================================
+
+           ZONE DE LECTURE
+
+           ========================================================= */
+
+        .reader {
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            overflow: hidden;
+
+        }
+
+        .reader-header {
+
+            padding: 25px 28px 15px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+        }
+
+        .reader-header h1 {
+
+            margin: 0 0 8px;
+
+            font-size: 30px;
+
+        }
+
+        .reader-header p {
+
+            margin: 0;
+
+            color: #6b7280;
+
+        }
+
+        /* =========================================================
+
+           CONTROLES
+
+           ========================================================= */
+
+        .controls {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            padding: 16px 20px;
+
+            background: #f8fafc;
+
+            border-bottom: 1px solid #e5e7eb;
+
+        }
+
+        .control-group {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+        }
+
+        .control-label {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+        .control-button {
+
+            border: 1px solid #d1d5db;
+
+            background: white;
+
+            color: #222;
+
+            padding: 9px 12px;
+
+            border-radius: 8px;
+
+            transition: 0.2s;
+
+        }
+
+        .control-button:hover {
+
+            background: #eef0ff;
+
+            border-color: #6366f1;
+
+        }
+
+        .control-button.primary {
+
+            background: #4f46e5;
+
+            border-color: #4f46e5;
+
+            color: white;
+
+        }
+
+        .control-button.primary:hover {
+
+            background: #4338ca;
+
+        }
+
+        select {
+
+            border: 1px solid #d1d5db;
+
+            padding: 9px;
+
+            border-radius: 8px;
+
+            background: white;
+
+        }
+
+        input[type="range"] {
+
+            accent-color: #4f46e5;
+
+            cursor: pointer;
+
+        }
+
+        /* =========================================================
+
+           ZONE DE TEXTE
+
+           ========================================================= */
+
+        .reading-area {
+
+            height: 600px;
+
+            overflow: auto;
+
+            padding: 35px;
+
+            position: relative;
+
+            scroll-behavior: auto;
+
+        }
+
+        .story-text {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            font-size: 21px;
+
+            line-height: 1.8;
+
+            letter-spacing: 0.1px;
+
+            transition: font-size 0.2s;
+
+        }
+
+        .story-text h2 {
+
+            font-size: 30px;
+
+            margin-top: 0;
+
+            margin-bottom: 25px;
+
+            color: #4338ca;
+
+        }
+
+        .story-text p {
+
+            margin-bottom: 25px;
+
+        }
+
+        /* =========================================================
+
+           MODE HORIZONTAL
+
+           ========================================================= */
+
+        .reading-area.horizontal {
+
+            overflow-x: auto;
+
+            overflow-y: hidden;
+
+        }
+
+        .reading-area.horizontal .story-text {
+
+            max-width: none;
+
+            width: max-content;
+
+            min-width: 100%;
+
+            height: 100%;
+
+            column-width: 650px;
+
+            column-gap: 80px;
+
+            column-fill: auto;
+
+        }
+
+        .reading-area.horizontal .story-text h2 {
+
+            column-span: all;
+
+        }
+
+        /* =========================================================
+
+           BARRE D'INFORMATION
+
+           ========================================================= */
+
+        .status {
+
+            padding: 10px 20px;
+
+            background: #eef2ff;
+
+            color: #3730a3;
+
+            font-size: 14px;
+
+            text-align: center;
+
+        }
+
+        /* =========================================================
+
+           BOUTONS FLOTTANTS
+
+           ========================================================= */
+
+        .floating-buttons {
+
+            position: fixed;
+
+            right: 20px;
+
+            bottom: 20px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            z-index: 10;
+
+        }
+
+        .floating-buttons button {
+
+            width: 45px;
+
+            height: 45px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-size: 20px;
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+        }
+
+        .floating-buttons button:hover {
+
+            background: #4338ca;
+
+        }
+
+        /* =========================================================
+
+           MODE SOMBRE
+
+           ========================================================= */
+
+        body.dark {
+
+            background: #111827;
+
+            color: #f3f4f6;
+
+        }
+
+        body.dark .sidebar,
+
+        body.dark .reader {
+
+            background: #1f2937;
+
+        }
+
+        body.dark .story-button {
+
+            background: #374151;
+
+            color: white;
+
+        }
+
+        body.dark .story-button:hover {
+
+            background: #4b5563;
+
+        }
+
+        body.dark .story-button.active {
+
+            background: #6366f1;
+
+        }
+
+        body.dark .reader-header {
+
+            border-color: #374151;
+
+        }
+
+        body.dark .reader-header p {
+
+            color: #cbd5e1;
+
+        }
+
+        body.dark .controls {
+
+            background: #111827;
+
+            border-color: #374151;
+
+        }
+
+        body.dark .control-button,
+
+        body.dark select {
+
+            background: #374151;
+
+            color: white;
+
+            border-color: #4b5563;
+
+        }
+
+        body.dark .status {
+
+            background: #312e81;
+
+            color: #e0e7ff;
+
+        }
+
+        body.dark .story-text h2 {
+
+            color: #a5b4fc;
+
+        }
+
+        /* =========================================================
+
+           TELEPHONE
+
+           ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .header-content {
+
+                align-items: flex-start;
+
+            }
+
+            .logo {
+
+                font-size: 21px;
+
+            }
+
+            .layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .sidebar {
+
+                position: static;
+
+            }
+
+            .story-list {
+
+                display: grid;
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+            .reader-header {
+
+                padding: 20px;
+
+            }
+
+            .reader-header h1 {
+
+                font-size: 25px;
+
+            }
+
+            .controls {
+
+                padding: 12px;
+
+            }
+
+            .reading-area {
+
+                height: 65vh;
+
+                min-height: 450px;
+
+                padding: 24px 20px;
+
+            }
+
+            .story-text {
+
+                font-size: 19px;
+
+                line-height: 1.75;
+
+            }
+
+            .story-text h2 {
+
+                font-size: 26px;
+
+            }
+
+            .floating-buttons {
+
+                right: 12px;
+
+                bottom: 12px;
+
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            header {
+
+                padding: 16px;
+
+            }
+
+            .container {
+
+                padding: 0 10px;
+
+                margin-top: 12px;
+
+            }
+
+            .story-list {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .control-group {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+
+            }
+
+            .reading-area {
+
+                padding: 20px 16px;
+
+            }
+
+            .story-text {
+
+                font-size: 18px;
+
+            }
+
+            .dark-button {
+
+                font-size: 13px;
+
+                padding: 8px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="logo">
+
+             Ma Bibliothèque
+
+            <small>Des histoires à lire à ton rythme</small>
+
+        </div>
+
+        <button class="dark-button" onclick="toggleDarkMode()">
+
+             Mode sombre
+
+        </button>
+
+    </div>
+
+</header>
+
+<div class="container">
+
+    <div class="layout">
+
+        <!-- =====================================================
+
+             MENU DES HISTOIRES
+
+             ===================================================== -->
+
+        <aside class="sidebar">
+
+            <h2> Histoires</h2>
+
+            <div class="story-list" id="storyList">
+
+                <!-- Les histoires seront ajoutées automatiquement ici -->
+
+            </div>
+
+        </aside>
+
+        <!-- =====================================================
+
+             LECTEUR
+
+             ===================================================== -->
+
+        <main class="reader">
+
+            <div class="reader-header">
+
+                <h1 id="storyTitle">Le Petit Prince</h1>
+
+                <p id="storyDescription">
+
+                    Une histoire simple à lire.
+
+                </p>
+
+            </div>
+
+            <!-- =================================================
+
+                 CONTROLES
+
+                 ================================================= -->
+
+            <div class="controls">
+
+                <div class="control-group">
+
+                    <span class="control-label">
+
+                        Défilement :
+
+                    </span>
+
+                    <select id="directionSelect" onchange="changeDirection()">
+
+                        <option value="vertical">⬇ Vertical</option>
+
+                        <option value="horizontal">➡ Horizontal</option>
+
+                    </select>
+
+                </div>
+
+                <div class="control-group">
+
+                    <span class="control-label">
+
+                        Vitesse :
+
+                    </span>
+
+                    <input
+
+                        type="range"
+
+                        id="speedRange"
+
+                        min="1"
+
+                        max="10"
+
+                        value="3"
+
+                        oninput="updateSpeedLabel()"
+
+                    >
+
+                    <span id="speedLabel">3</span>
+
+                </div>
+
+                <div class="control-group">
+
+                    <span class="control-label">
+
+                        Texte :
+
+                    </span>
+
+                    <button
+
+                        class="control-button"
+
+                        onclick="changeFontSize(-1)"
+
+                    >
+
+                        A−
+
+                    </button>
+
+                    <button
+
+                        class="control-button"
+
+                        onclick="changeFontSize(1)"
+
+                    >
+
+                        A+
+
+                    </button>
+
+                </div>
+
+                <div class="control-group">
+
+                    <button
+
+                        class="control-button primary"
+
+                        id="playButton"
+
+                        onclick="toggleAutoScroll()"
+
+                    >
+
+                        ▶ Démarrer
+
+                    </button>
+
+                    <button
+
+                        class="control-button"
+
+                        onclick="stopAutoScroll()"
+
+                    >
+
+                         Arrêter
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- =================================================
+
+                 TEXTE
+
+                 ================================================= -->
+
+            <div
+
+                class="reading-area"
+
+                id="readingArea"
+
+            >
+
+                <article
+
+                    class="story-text"
+
+                    id="storyText"
+
+                >
+
+                </article>
+
+            </div>
+
+            <div class="status" id="status">
+
+                Défilement automatique arrêté
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+
+     BOUTONS FLOTTANTS
+
+     ========================================================= -->
+
+<div class="floating-buttons">
+
+    <button onclick="scrollUp()" title="Monter">
+
+        ↑
+
+    </button>
+
+    <button onclick="scrollDown()" title="Descendre">
+
+        ↓
+
+    </button>
+
+</div>
+
+<script>
+
+    /* =========================================================
+
+       LES HISTOIRES
+
+       =========================================================
+
+       C'EST ICI QUE TU PEUX AJOUTER TES HISTOIRES.
+
+       Chaque histoire possède :
+
+       - title = titre
+
+       - description = petite description
+
+       - content = texte
+
+       Pour ajouter une histoire, copie simplement un bloc
+
+       comme celui-ci :
+
+       {
+
+           title: "Mon histoire",
+
+           description: "Une petite description",
+
+           content: `
+
+               <p>Premier paragraphe...</p>
+
+               <p>Deuxième paragraphe...</p>
+
+           `
+
+       },
+
+       Attention à garder la virgule après chaque histoire,
+
+       sauf la dernière.
+
+    */
+
+    const stories = [
+
+        {
+
+            title: " Le Petit Prince",
+
+            description: "Une histoire poétique et facile à découvrir.",
+
+            content: `
+
+                <h2>Le Petit Prince</h2>
+
+                <p>
+
+                    Un petit garçon vivait sur une toute petite planète.
+
+                    Il regardait souvent les étoiles et se posait beaucoup
+
+                    de questions sur le monde qui l'entourait.
+
+                </p>
+
+                <p>
+
+                    Sur sa planète, il avait une rose qu'il aimait beaucoup.
+
+                    Il prenait soin d'elle chaque jour.
+
+                </p>
+
+                <p>
+
+                    Un jour, le Petit Prince décida de partir découvrir
+
+                    d'autres planètes. Il rencontra alors des personnages
+
+                    très différents les uns des autres.
+
+                </p>
+
+                <p>
+
+                    Il comprit peu à peu que les grandes personnes pouvaient
+
+                    parfois oublier les choses vraiment importantes.
+
+                </p>
+
+                <p>
+
+                    Son voyage lui permit surtout de comprendre la valeur
+
+                    de l'amitié, de l'attachement et des personnes que
+
+                    l'on aime.
+
+                </p>
+
+                <p>
+
+                    Après de nombreuses rencontres, le Petit Prince continua
+
+                    son voyage en regardant les étoiles.
+
+                </p>
+
+            `
+
+        },
+
+        {
+
+            title: " Merlin",
+
+            description: "Une aventure magique dans un monde légendaire.",
+
+            content: `
+
+                <h2>Merlin</h2>
+
+                <p>
+
+                    Il y a très longtemps, dans un royaume entouré de forêts,
+
+                    vivait un jeune garçon nommé Merlin.
+
+                </p>
+
+                <p>
+
+                    Merlin était différent des autres enfants.
+
+                    Il avait une grande curiosité et semblait comprendre
+
+                    des choses que personne ne lui avait enseignées.
+
+                </p>
+
+                <p>
+
+                    Un jour, il découvrit qu'il possédait un étrange pouvoir.
+
+                    Il pouvait faire bouger de petits objets sans les toucher.
+
+                </p>
+
+                <p>
+
+                    Au début, il eut peur de ce pouvoir.
+
+                    Mais il apprit progressivement à le contrôler.
+
+                </p>
+
+                <p>
+
+                    Merlin rencontra ensuite le futur roi Arthur.
+
+                    Les deux garçons devinrent de grands amis.
+
+                </p>
+
+                <p>
+
+                    Ensemble, ils affrontèrent de nombreuses difficultés
+
+                    et découvrirent que le courage ne signifie pas ne jamais
+
+                    avoir peur.
+
+                </p>
+
+                <p>
+
+                    Pour Merlin, la véritable magie était surtout de savoir
+
+                    aider les autres lorsque cela était nécessaire.
+
+                </p>
+
+            `
+
+        },
+
+        {
+
+            title: " L'île mystérieuse",
+
+            description: "Une aventure pleine de découvertes.",
+
+            content: `
+
+                <h2>L'île mystérieuse</h2>
+
+                <p>
+
+                    Après une longue traversée en mer, un groupe de jeunes
+
+                    voyageurs arriva sur une île qu'aucune carte ne semblait
+
+                    indiquer.
+
+                </p>
+
+                <p>
+
+                    Au début, ils furent heureux de trouver de l'eau et
+
+                    quelques fruits.
+
+                </p>
+
+                <p>
+
+                    Mais, en explorant l'île, ils découvrirent des traces
+
+                    étranges dans le sable.
+
+                </p>
+
+                <p>
+
+                    Ils décidèrent de suivre les traces.
+
+                    Elles les conduisirent jusqu'à une vieille grotte.
+
+                </p>
+
+                <p>
+
+                    À l'intérieur, ils trouvèrent des objets qui semblaient
+
+                    appartenir à des explorateurs venus ici longtemps avant eux.
+
+                </p>
+
+                <p>
+
+                    Ils comprirent alors que l'île avait une histoire
+
+                    beaucoup plus mystérieuse qu'ils ne l'avaient imaginé.
+
+                </p>
+
+                <p>
+
+                    Leur aventure ne faisait que commencer.
+
+                </p>
+
+            `
+
+        },
+
+        {
+
+            title: " Le Petit Chaperon rouge",
+
+            description: "Un conte traditionnel très connu.",
+
+            content: `
+
+                <h2>Le Petit Chaperon rouge</h2>
+
+                <p>
+
+                    Il était une fois une petite fille qui portait toujours
+
+                    un joli chaperon rouge.
+
+                </p>
+
+                <p>
+
+                    Un matin, sa mère lui demanda d'apporter un panier
+
+                    de nourriture à sa grand-mère qui habitait de l'autre
+
+                    côté de la forêt.
+
+                </p>
+
+                <p>
+
+                    La petite fille partit donc avec son panier.
+
+                    Elle marchait tranquillement sur le chemin.
+
+                </p>
+
+                <p>
+
+                    Dans la forêt, elle rencontra un loup.
+
+                    Celui-ci lui demanda où elle allait.
+
+                </p>
+
+                <p>
+
+                    La petite fille lui répondit qu'elle allait chez
+
+                    sa grand-mère.
+
+                </p>
+
+                <p>
+
+                    Le loup partit alors rapidement dans une autre direction.
+
+                </p>
+
+                <p>
+
+                    Le Petit Chaperon rouge continua son chemin,
+
+                    sans savoir ce qui l'attendait.
+
+                </p>
+
+            `
+
+        },
+
+        {
+
+            title: " Le Renard et le Corbeau",
+
+            description: "Une fable courte et facile à lire.",
+
+            content: `
+
+                <h2>Le Renard et le Corbeau</h2>
+
+                <p>
+
+                    Un corbeau était perché sur une branche.
+
+                    Il tenait dans son bec un morceau de fromage.
+
+                </p>
+
+                <p>
+
+                    Un renard passa sous l'arbre.
+
+                    Il aperçut immédiatement le fromage.
+
+                </p>
+
+                <p>
+
+                    Le renard réfléchit à une manière de récupérer
+
+                    le morceau sans avoir à grimper.
+
+                </p>
+
+                <p>
+
+                    Il complimenta alors le corbeau et lui dit
+
+                    qu'il devait certainement avoir une très belle voix.
+
+                </p>
+
+                <p>
+
+                    Le corbeau, heureux d'entendre ces compliments,
+
+                    ouvrit son bec pour chanter.
+
+                </p>
+
+                <p>
+
+                    Le fromage tomba directement au sol.
+
+                </p>
+
+                <p>
+
+                    Le renard le ramassa et partit avec son repas.
+
+                </p>
+
+                <p>
+
+                    Cette fable rappelle qu'il faut rester prudent
+
+                    face aux compliments intéressés.
+
+                </p>
+
+            `
+
+        }
+
+    ];
+
+    /* =========================================================
+
+       VARIABLES
+
+       ========================================================= */
+
+    let currentStory = 0;
+
+    let autoScrolling = false;
+
+    let scrollTimer = null;
+
+    let fontSize = 21;
+
+    /* =========================================================
+
+       AFFICHER LES HISTOIRES DANS LE MENU
+
+       ========================================================= */
+
+    function createStoryButtons() {
+
+        const list = document.getElementById("storyList");
+
+        list.innerHTML = "";
+
+        stories.forEach((story, index) => {
+
+            const button = document.createElement("button");
+
+            button.className = "story-button";
+
+            button.textContent = story.title;
+
+            button.onclick = function() {
+
+                loadStory(index);
+
+            };
+
+            list.appendChild(button);
+
+        });
+
+    }
+
+    /* =========================================================
+
+       CHARGER UNE HISTOIRE
+
+       ========================================================= */
+
+    function loadStory(index) {
+
+        stopAutoScroll();
+
+        currentStory = index;
+
+        const story = stories[index];
+
+        document.getElementById("storyTitle").textContent =
+
+            story.title;
+
+        document.getElementById("storyDescription").textContent =
+
+            story.description;
+
+        document.getElementById("storyText").innerHTML =
+
+            story.content;
+
+        document.getElementById("readingArea").scrollTop = 0;
+
+        document.getElementById("readingArea").scrollLeft = 0;
+
+        updateActiveButton();
+
+        updateStatus("Lecture de : " + story.title);
+
+    }
+
+    /* =========================================================
+
+       BOUTON ACTIF
+
+       ========================================================= */
+
+    function updateActiveButton() {
+
+        const buttons =
+
+            document.querySelectorAll(".story-button");
+
+        buttons.forEach((button, index) => {
+
+            button.classList.toggle(
+
+                "active",
+
+                index === currentStory
+
+            );
+
+        });
+
+    }
+
+    /* =========================================================
+
+       DIRECTION
+
+       ========================================================= */
+
+    function changeDirection() {
+
+        const direction =
+
+            document.getElementById("directionSelect").value;
+
+        const area =
+
+            document.getElementById("readingArea");
+
+        if (direction === "horizontal") {
+
+            area.classList.add("horizontal");
+
+        } else {
+
+            area.classList.remove("horizontal");
+
+        }
+
+        area.scrollTop = 0;
+
+        area.scrollLeft = 0;
+
+        updateStatus(
+
+            direction === "horizontal"
+
+                ? "Défilement horizontal"
+
+                : "Défilement vertical"
+
+        );
+
+    }
+
+    /* =========================================================
+
+       VITESSE
+
+       ========================================================= */
+
+    function updateSpeedLabel() {
+
+        const speed =
+
+            document.getElementById("speedRange").value;
+
+        document.getElementById("speedLabel").textContent =
+
+            speed;
+
+        if (autoScrolling) {
+
+            stopAutoScroll();
+
+            startAutoScroll();
+
+        }
+
+    }
+
+    /* =========================================================
+
+       DEMARRER / ARRETER
+
+       ========================================================= */
+
+    function toggleAutoScroll() {
+
+        if (autoScrolling) {
+
+            stopAutoScroll();
+
+        } else {
+
+            startAutoScroll();
+
+        }
+
+    }
+
+    function startAutoScroll() {
+
+        if (autoScrolling) {
+
+            return;
+
+        }
+
+        autoScrolling = true;
+
+        document.getElementById("playButton").textContent =
+
+            "⏸ Pause";
+
+        updateStatus("Défilement automatique en cours...");
+
+        scrollTimer = setInterval(autoScroll, 30);
+
+    }
+
+    function stopAutoScroll() {
+
+        autoScrolling = false;
+
+        if (scrollTimer !== null) {
+
+            clearInterval(scrollTimer);
+
+            scrollTimer = null;
+
+        }
+
+        document.getElementById("playButton").textContent =
+
+            "Démarrer";
+
+        updateStatus("Défilement automatique arrêté");
+
+    }
+
+    /* =========================================================
+
+       DEFILEMENT AUTOMATIQUE
+
+       ========================================================= */
+
+    function autoScroll() {
+
+        const area =
+
+            document.getElementById("readingArea");
+
+        const speed =
+
+            Number(document.getElementById("speedRange").value);
+
+        const direction =
+
+            document.getElementById("directionSelect").value;
+
+        /*
+
+            Plus le chiffre est grand,
+
+            plus le texte défile rapidement.
+
+        */
+
+        const pixels = 0.25 + speed * 0.20;
+
+        if (direction === "horizontal") {
+
+            area.scrollLeft += pixels;
+
+            if (
+
+                area.scrollLeft + area.clientWidth
+
+                >= area.scrollWidth - 2
+
+            ) {
+
+                stopAutoScroll();
+
+                updateStatus("Fin de l'histoire");
+
+            }
+
+        } else {
+
+            area.scrollTop += pixels;
+
+            if (
+
+                area.scrollTop + area.clientHeight
+
+                >= area.scrollHeight - 2
+
+            ) {
+
+                stopAutoScroll();
+
+                updateStatus("Fin de l'histoire");
+
+            }
+
+        }
+
+    }
+
+    /* =========================================================
+
+       TAILLE DU TEXTE
+
+       ========================================================= */
+
+    function changeFontSize(change) {
+
+        fontSize += change * 2;
+
+        /*
+
+            Limite minimum et maximum
+
+        */
+
+        if (fontSize < 14) {
+
+            fontSize = 14;
+
+        }
+
+        if (fontSize > 42) {
+
+            fontSize = 42;
+
+        }
+
+        document.getElementById("storyText").style.fontSize =
+
+            fontSize + "px";
+
+        updateStatus(
+
+            "Taille du texte : " + fontSize + " px"
+
+        );
+
+    }
+
+    /* =========================================================
+
+       BOUTONS HAUT / BAS
+
+       ========================================================= */
+
+    function scrollUp() {
+
+        const area =
+
+            document.getElementById("readingArea");
+
+        area.scrollBy({
+
+            top: -400,
+
+            left: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+    function scrollDown() {
+
+        const area =
+
+            document.getElementById("readingArea");
+
+        area.scrollBy({
+
+            top: 400,
+
+            left: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+    /* =========================================================
+
+       MODE SOMBRE
+
+       ========================================================= */
+
+    function toggleDarkMode() {
+
+        document.body.classList.toggle("dark");
+
+        const enabled =
+
+            document.body.classList.contains("dark");
+
+        localStorage.setItem(
+
+            "darkMode",
+
+            enabled ? "true" : "false"
+
+        );
+
+    }
+
+    /* =========================================================
+
+       MESSAGE D'ETAT
+
+       ========================================================= */
+
+    function updateStatus(message) {
+
+        document.getElementById("status").textContent =
+
+            message;
+
+    }
+
+    /* =========================================================
+
+       RESTAURER LE MODE SOMBRE
+
+       ========================================================= */
+
+    function loadDarkMode() {
+
+        const darkMode =
+
+            localStorage.getItem("darkMode");
+
+        if (darkMode === "true") {
+
+            document.body.classList.add("dark");
+
+        }
+
+    }
+
+    /* =========================================================
+
+       INITIALISATION DU SITE
+
+       ========================================================= */
+
+    createStoryButtons();
+
+    loadStory(0);
+
+    loadDarkMode();
+
+</script>
+
+</body>
+
+</html>
